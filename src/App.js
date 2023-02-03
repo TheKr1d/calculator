@@ -1,7 +1,6 @@
 import "./App.css";
 
-function App() {
-  
+const App = () => {
   return (
     <div className="container">
       <div className="calculator dark">
