@@ -2,6 +2,16 @@ import "./App.css";
 import { useState } from "react";
 import cn from "classnames";
 
+const router = (operator, postponed, expression) => {
+    const r = {
+      divide: () => (Number(postponed) / Number(expression)),
+      times: () => (Number(postponed) * Number(expression)),
+      subtraction: () => (Number(postponed) - Number(expression)),
+      addition: () => (Number(postponed) + Number(expression)),
+    }
+    return r[operator]();
+  }
+
 
 const App = () => {
   const [postponed, setPostponed] = useState('');
@@ -17,27 +27,28 @@ const App = () => {
     setExpression('0');
     setActiveOperator('');
   }
-  const operator = (str) => {
-    setPostponed(expression);
-    setExpression('');
-    setActiveOperator(str);
-  };
   const equal = () => {
-    const router = {
-      divide: () => (Number(postponed) / Number(expression)),
-      times: () => (Number(postponed) * Number(expression)),
-      subtraction: () => (Number(postponed) - Number(expression)),
-      addition: () => (Number(postponed) + Number(expression)),
-    }
     if (activeOperator === '') {
       return;
     } else {
-      const result = router[activeOperator]();
+      const result = router(activeOperator, postponed, expression);
       setPostponed('');
       setExpression(String(result));
       setActiveOperator('');
     }
   }
+    const operator = (str) => {
+    if (activeOperator !== '') {
+      const result = router(activeOperator, postponed, expression);
+      setPostponed(result);
+      setActiveOperator(str);
+      setExpression('');
+    } else {
+    setPostponed(expression);
+    setExpression('');
+    setActiveOperator(str);
+    }
+  };
 
   return (
     <div className="container">
