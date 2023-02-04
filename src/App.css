@@ -65,9 +65,21 @@ body {
     z-index: -1;
 }
 
-#display {
+#display-postponed {
     margin: 0 10px;
-    height: 150px;
+    height: 110px;
+    width: auto;
+    max-width: 270px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    font-size: 20px;
+    margin-bottom: 20px;
+    overflow-x: scroll;
+  }
+  #display-expression {
+    margin: 0 10px;
+    height: 40px;
     width: auto;
     max-width: 270px;
     display: flex;
@@ -78,7 +90,7 @@ body {
     overflow-x: scroll;
   }
 
-#display::-webkit-scrollbar {
+#display-expression::-webkit-scrollbar {
     display: block;
     height: 3px;
 }
@@ -112,7 +124,7 @@ button#zero {
     background-color: #fff;
 }
 
-.calculator #display {
+.calculator #display-expression {
     color: #0a1e23;
 }
 
@@ -142,7 +154,9 @@ button#zero {
     background-color: #071115;
   }
 
-  .calculator.dark #display {
+  .calculator.dark #display-expression,
+  .calculator.dark #display-postponed
+   {
     color: #f8fafb;
   }
 
@@ -152,6 +166,11 @@ button#zero {
     background-color: #9F9F9F;
     color: #151515;
   }
+  .calculator.dark button#divide.active,
+  .calculator.dark button#times.active {
+    background-color: #dedede;
+    color: #151515;
+  }
   
   .calculator.dark button#backspace,
   .calculator.dark button#subtraction,
@@ -159,6 +178,12 @@ button#zero {
   .calculator.dark button#equal {
     background-color: #F69906;
     color: #F5F5F5;
+  }
+  .calculator.dark button#subtraction.active,
+  .calculator.dark button#addition.active,
+  .calculator.dark button#equal.active {
+    background-color: #F5F5F5;
+    color: #F69906;
   }
 
 

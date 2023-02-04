@@ -1,10 +1,13 @@
 import "./App.css";
 import { useState } from "react";
+import cn from "classnames";
+
 
 const App = () => {
   const [postponed, setPostponed] = useState('');
   const [expression, setExpression] = useState('0');
   const [activeOperator, setActiveOperator] = useState('');
+  const [darkTheme, setDarkTheme] = useState(true);
 
 
   const addNumber = (value) => expression[0] === '0' ? setExpression(value) : setExpression(`${expression}${value}`);
@@ -26,19 +29,25 @@ const App = () => {
       subtraction: () => (Number(postponed) - Number(expression)),
       addition: () => (Number(postponed) + Number(expression)),
     }
-    const result = router[activeOperator]();
-    setPostponed(String(result));
-    setExpression(String(result));
+    if (activeOperator === '') {
+      return;
+    } else {
+      const result = router[activeOperator]();
+      setPostponed('');
+      setExpression(String(result));
+      setActiveOperator('');
+    }
   }
 
   return (
     <div className="container">
-      <div className="calculator dark">
-        <div className="theme-toggler active">
-          <i className="toggler-icon"></i>
+      <div className={cn('calculator', darkTheme ? 'dark' : '')}>
+        <div className={cn('theme-toggler', darkTheme ? 'active' : '')} onClick={() => setDarkTheme(!darkTheme)}>
+          <div className="toggler-icon"></div>
         </div>
         <div className="display-screen">
-          <div id="display">{expression}</div>
+          <div id="display-postponed">{postponed}</div>
+          <div id="display-expression">{expression}</div>
         </div>
         <div className="buttons">
           <table>
@@ -50,17 +59,17 @@ const App = () => {
                   </button>
                 </td>
                 <td>
-                  <button className="btn-operator" onClick={() => operator('divide')} id="divide">
+                  <button className={cn('btn-operator', activeOperator === 'divide' ? 'active' : null)} onClick={() => operator('divide')} id="divide">
                     &divide;
                   </button>
                 </td>
                 <td>
-                  <button className="btn-operator" onClick={() => operator('times')} id="times">
+                  <button className={cn('btn-operator', activeOperator === 'times' ? 'active' : null)} onClick={() => operator('times')} id="times">
                     &times;
                   </button>
                 </td>
                 <td>
-                  <button className="btn-operator" onClick={() => backspace()} id="backspace">
+                  <button className="btn-operator active" onClick={() => backspace()} id="backspace">
                     {"<"}
                   </button>
                 </td>
@@ -82,7 +91,7 @@ const App = () => {
                   </button>
                 </td>
                 <td>
-                  <button className="btn-operator" onClick={() => operator('subtraction')} id="subtraction">
+                  <button className={cn('btn-operator', activeOperator === 'subtraction' ? 'active' : null)} onClick={() => operator('subtraction')} id="subtraction">
                     -
                   </button>
                 </td>
@@ -104,7 +113,7 @@ const App = () => {
                   </button>
                 </td>
                 <td>
-                  <button className="btn-operator" onClick={() => operator('addition')} id="addition">
+                  <button className={cn('btn-operator', activeOperator === 'addition' ? 'active' : null)} onClick={() => operator('addition')} id="addition">
                     +
                   </button>
                 </td>
