@@ -2,6 +2,7 @@ import "./App.css";
 import { useState } from "react";
 import cn from "classnames";
 
+
 const router = (operator, postponed, expression) => {
     const r = {
       divide: () => (Number(postponed) / Number(expression)),
@@ -14,13 +15,23 @@ const router = (operator, postponed, expression) => {
 
 
 const App = () => {
-  const [postponed, setPostponed] = useState('');
-  const [expression, setExpression] = useState('0');
-  const [activeOperator, setActiveOperator] = useState('');
+
   const [darkTheme, setDarkTheme] = useState(true);
 
 
+  const [postponed, setPostponed] = useState('');
+  const [expression, setExpression] = useState('0');
+  const [activeOperator, setActiveOperator] = useState('');
+
+
   const addNumber = (value) => expression[0] === '0' ? setExpression(value) : setExpression(`${expression}${value}`);
+  const addShot = () => {
+    if (expression.includes('.')) {
+      return;
+    } else {
+      setExpression(`${expression}.`);
+    }
+  }
   const backspace = () => setExpression(expression.slice(0, expression.length - 1));
   const clear = () => {
     setPostponed('');
@@ -38,10 +49,11 @@ const App = () => {
     }
   }
     const operator = (str) => {
-    if (activeOperator !== '') {
+    if (activeOperator !== '' && expression === '') {
+      setActiveOperator(str);
+    } else if (activeOperator !== '') {
       const result = router(activeOperator, postponed, expression);
       setPostponed(result);
-      setActiveOperator(str);
       setExpression('');
     } else {
     setPostponed(expression);
@@ -158,7 +170,7 @@ const App = () => {
                   </button>
                 </td>
                 <td>
-                  <button className="btn-operator" onClick={() => addNumber('.')} id="comma">
+                  <button className="btn-operator" onClick={() => addShot()} id="comma">
                     .
                   </button>
                 </td>
